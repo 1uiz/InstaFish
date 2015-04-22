@@ -1,4 +1,5 @@
 <?php
+    use src/Money.php;
    class Money
 {
     private $amount;
