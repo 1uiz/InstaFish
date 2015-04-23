@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<phpunit bootstrap="/src/autoload.php"
+<phpunit 
+         <!--bootstrap="/src/autoload.php"-->
          color="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
