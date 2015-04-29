@@ -1,6 +1,6 @@
 <?php
 	function getConnection(){
-		$host = "localhost";
+		$host = "104.236.152.104";
 	    $dbname= "David"; // Your otter id
 	    $username = "root"; // Your otter id
 	    $password = "Cricket83";
