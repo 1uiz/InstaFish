@@ -168,9 +168,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
                     Select image:<input type="file" name="fileName" />
                     <br/>
                     <br/>
-                    <form action="">
-                      <a href="javascript:%20check_empty()" id="addInfo" value="submit" name="add">Add</a>
-                    </form>
+                <a href="javascript:%20check_empty()" id="addInfo">Add</a>
           </form>
         </div>
     </div>
@@ -182,13 +180,13 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
     <script>
     function check_empty() {
-    if (document.getElementById('name').value == "" || document.getElementById('email').value == "" || document.getElementById('msg').value == "") {
-      alert("Fill All Fields !");
-    }
-    else {
-      document.getElementById('form').submit();
-      alert("Form Submitted Successfully...");
-    }
+        if (document.getElementById('name').value == "" || document.getElementById('email').value == "" || document.getElementById('msg').value == "") {
+          alert("Fill All Fields !");
+        }
+        else {
+          document.getElementById('form').submit();
+            alert("Form Submitted Successfully...");
+          }
     }
     //Function To Display Popup
     function div_show() {
