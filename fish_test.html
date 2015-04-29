@@ -153,14 +153,19 @@ google.maps.event.addDomListener(window, 'load', initialize);
         <!-- Popup Div Starts Here -->
         <div id="popupContact">
         <!-- Contact Us Form -->
-          <form action="#" id="form" method="post" name="form">
+          <form action="#" id="form" method="post" name="form" enctype="multipart/form-data">
             <img id="close" src="img/closeX.png" onclick ="div_hide()">
               <h2 style="color:#ffffff;">Add info about your pin</h2>
                 <hr>
                 <input id="name" name="name" placeholder="Type of fish" type="text">
                 Amount: <input type="number" min="0" name="amount" id="amount" style="background-color:white"><br/>
                 <textarea placeholder="Share some info that could help others." cols="80" rows="5" style="background-color:white"></textarea><br/>
-                <a href="javascript:%20check_empty()" id="submit">Add</a>
+                    Select image:<input type="file" name="fileName" />
+                    <br/>
+                    <br/>
+                    <form action="">
+                      <button href="javascript:%20check_empty()" id="addInfo" value="submit" name="add">Add</button>
+                    </form>
           </form>
         </div>
     </div>
