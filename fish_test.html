@@ -35,8 +35,9 @@ function updateMarkerAddress(str) {
 
 function initialize() {
   var latLng = new google.maps.LatLng(36.60367242283467, -121.88930886363983);
+  
   var map = new google.maps.Map(document.getElementById('mapCanvas'), {
-    zoom: 8,
+    zoom: 13,
     center: latLng,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
