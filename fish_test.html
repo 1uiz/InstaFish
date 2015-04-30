@@ -164,11 +164,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
                 <hr>
                 <input id="name" name="name" placeholder="Type of fish" type="text">
                 Amount: <input type="number" min="0" name="amount" id="amount" style="background-color:white"><br/>
-                <textarea placeholder="Share some info that could help others." cols="80" rows="5" style="background-color:white"></textarea><br/>
+                <textarea id="comment" placeholder="Share some info that could help others." cols="80" rows="5" style="background-color:white"></textarea><br/>
                     Select image:<input type="file" name="fileName" />
                     <br/>
                     <br/>
-                <a href="javascript:%20check_empty()" id="addInfo">Add</a>
+                <button id="addInfo" onclick="check_empty()">Add</button>
           </form>
         </div>
     </div>
@@ -180,10 +180,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
     <script>
     function check_empty() {
-        if (document.getElementById('name').value == "" || document.getElementById('email').value == "" || document.getElementById('msg').value == "") {
+      //console.log("check empty here");
+        if (document.getElementById('name').value == "" || document.getElementById('amount').value == "" || document.getElementById('comment').value == "") {
           alert("Fill All Fields !");
         }
         else {
+          //console.log("Form success");
           document.getElementById('form').submit();
             alert("Form Submitted Successfully...");
           }
