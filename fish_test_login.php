@@ -17,15 +17,16 @@ $result = $stmt->fetch(); //We are expecting one record
 
 if (empty($result)) {
 
+  echo"Wrong username or password";
     header("Location: fish_test_login.php?error=WRONG USERNAME OR PASSWORD");
-      
-    
+
+
 } else {
 
     $_SESSION['username']  = $result['username'];
     $_SESSION['adminName'] = $result['firstName'] . " " . $result['lastName'];
     header("Location: fish_test.html");
-    
+
 }
 
 

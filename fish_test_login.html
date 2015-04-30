@@ -141,6 +141,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
   input{
     color:#000000;
   }
+  #steps{
+    margin: auto 0;
+    text-align:center;
+    font-size:25px;
+
+  }
 
   </style>
   <div class="container" id="imageFish" style="background-image:url(img/fish.jpg);">
@@ -158,35 +164,39 @@ google.maps.event.addDomListener(window, 'load', initialize);
     </div>
   </div>
   <div class="row" style="height:55px;"></div>
+
   <div class="container" id="container2">
     <div class="row" id="description">
-        <div class="col-xs-3">
+        <div class="col-md-2">
           <img src="img/fishingrod.png" width="150px">
         </div>
-        <div class="col-xs-6" id="font">
+        <div class="col-md-7" id="font">
           A crowd-sourcing fishing network that gives users information about a potential fishing ground. Users are able to zoom in
           on a location that is accessible for the public aggregated with their fishing catch.
         </div>
-        <div class="col-xs-3">
+        <div class="col-md-2">
           <img src="img/pisces.png" width="100px">
         </div>
     </div>
   </div>
+
   <div class="row"style="height:55px;"></div>
+
   <div class="container" id="container3">
-    <div class="row" id="map">
-      <div class="col-md-12">
-      <div id="mapCanvas" style="-moz-box-shadow: 1px 1px 3px 2px #3b5998;
-        -webkit-box-shadow: 1px 1px 3px 2px #3b5998;
-        box-shadow:         1px 1px 3px 2px #3b5998;">
+      <div class="row" id="map">
+        <div class="col-md-12">
+          <div id="mapCanvas" style="-moz-box-shadow: 1px 1px 3px 2px #3b5998;
+            -webkit-box-shadow: 1px 1px 3px 2px #3b5998;
+            box-shadow:         1px 1px 3px 2px #3b5998;">
+          </div>
+        </div>
       </div>
     </div>
-    </div>
-  </div>
-</div>
+
 <div class="row"style="height:55px;"></div>
+
 <div class="container" id="container4">
-  <div class="row" id="description">
+  <div class="row" id="steps">
       <div class="col-md-4" id="font">
         <h1 id="font">Step 1.</h1>
         Create an account.
@@ -201,6 +211,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
       </div>
   </div>
   <div class="row"style="height:55px;"></div>
+
+
+  <!-- POP UP DIV FOR LOGIN -->
 
 
 
