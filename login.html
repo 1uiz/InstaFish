@@ -1,11 +1,11 @@
-
 <html>
 <head>
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/mainStyles.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
 var geocoder = new google.maps.Geocoder();
-
 function geocodePosition(pos) {
   geocoder.geocode({
     latLng: pos
@@ -17,25 +17,20 @@ function geocodePosition(pos) {
     }
   });
 }
-
 function updateMarkerStatus(str) {
   document.getElementById('markerStatus').innerHTML = str;
 }
-
 function updateMarkerPosition(latLng) {
   document.getElementById('info').innerHTML = [
     latLng.lat(),
     latLng.lng()
   ].join(', ');
 }
-
 function updateMarkerAddress(str) {
   document.getElementById('address').innerHTML = str;
 }
-
 function initialize() {
   var latLng = new google.maps.LatLng(36.60367242283467, -121.88930886363983);
-  
   var map = new google.maps.Map(document.getElementById('mapCanvas'), {
     zoom: 13,
     center: latLng,
@@ -47,57 +42,40 @@ function initialize() {
     map: map,
     draggable: false
   });
-  
   // Update current position info.
   updateMarkerPosition(latLng);
   geocodePosition(latLng);
-  
   // Add dragging event listeners.
   google.maps.event.addListener(marker, 'dragstart', function() {
     updateMarkerAddress('Dragging...');
   });
-  
   google.maps.event.addListener(marker, 'drag', function() {
     updateMarkerStatus('Dragging...');
     updateMarkerPosition(marker.getPosition());
   });
-  
   google.maps.event.addListener(marker, 'dragend', function() {
     updateMarkerStatus('Drag ended');
     geocodePosition(marker.getPosition());
   });
 }
-    
 google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 </head>
-<body id="wrapper">
-       
+<body>
+
   <style>
-  #wrapper{
-    background: rgb(233, 234, 237);  
+  body{
+    background: rgb(233, 234, 237);
+    margin: auto 0;
   }
-    
   #mapCanvas {
-    width: 100%;
-    height: 93%;
+    height: 100%;
     float: center;
-  }
-  #myForm{
-      width: 500px;
-      height: 200px;
-      float: left;
-  }
-  #infoPanel {
-    float: left;
-    margin-left: 10px;
-  }
-  #infoPanel div {
-    margin-bottom: 5px;
+    margin: 40px;
+    float: center;
   }
   #header{
       width: 100%;
-      height: 7%;
       background-color: rgb(59,89,152);
   }
   #banner{
@@ -105,39 +83,124 @@ google.maps.event.addDomListener(window, 'load', initialize);
       color: white;
       margin: 15px;
   }
+  #login{
+    color: #000000;
+  }
+  #map{
+    margin: auto 0px;
+    width:100%;
+    height:400px;
+  }
+  #header{
+    margin: auto 0px;
+    width:100%;
+    padding-left:45px;
+    padding-top:10px;
+    padding-bottom:0px;
+  }
+  #imageFish{
+    margin: auto 0px;
+    width:100%;
+    height:550px;
+    background-attachment: fixed;
+  	background-size: cover;
+  }
+  #description{
+    margin: auto 0;
+    text-align:center;
+    font-size:25px;
+  }
+  #container3{
+    background-color:#377fa3;
+    margin: auto 0;
+    width:100%;
+  }
+  #title{
+    font-family: customFont;
+    font-size:80px;
+    color: #ffffff;
+    padding-bottom:10px;
+    text-align: center;
+    padding-top:150px;
+  }
+  input{
+    color:#000000;
+  }
   </style>
-    <div id="header">
-       <header id="banner">
-           <form method="post" action="login.php">
-              Username: <input type="text" name="username" style="background-color:#f7f7f7"> 
-           Password: <input type="password" name="password" style="background-color:#f7f7f7"> 
-           <input type="submit" value="Login!" name="loginForm"/> 
-           </form>
-           
-       </header> 
+  <div class="container" id="imageFish" style="background-image:url(img/fish.jpg);">
+    <div class="row">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+          <form  action="fish_test_login.php" method="post" id="banner">
+              Username: <input type="text" name="username" style="background-color:#f7f7f7">
+              Password: <input type="password" name="password" style="background-color:#f7f7f7">
+              <input type="submit" value="Login!" name="loginForm" id="login"/>
+          </form>
+        </div>
+        <h1 id="title"> InstaFish</h1>
     </div>
-    
-    
-  <div id="mapCanvas" style="-moz-box-shadow: 1px 1px 3px 2px #3b5998;
-  -webkit-box-shadow: 1px 1px 3px 2px #3b5998;
-  box-shadow:         1px 1px 3px 2px #3b5998;"></div>
+  </div>
+  <div class="row" style="height:55px;"></div>
+  <div class="container" id="container2">
+    <div class="row" id="description">
+        <div class="col-xs-3">
+          <img src="img/fishingrod.png" width="150px">
+        </div>
+        <div class="col-xs-6" id="font">
+          A crowd-sourcing fishing network that gives users information about a potential fishing ground. Users are able to zoom in
+          on a location that is accessible for the public aggregated with their fishing catch.
+        </div>
+        <div class="col-xs-3">
+          <img src="img/pisces.png" width="100px">
+        </div>
+    </div>
+  </div>
+  <div class="row"style="height:55px;"></div>
+  <div class="container" id="container3">
+    <div class="row" id="map">
+      <div class="col-md-12">
+      <div id="mapCanvas" style="-moz-box-shadow: 1px 1px 3px 2px #3b5998;
+        -webkit-box-shadow: 1px 1px 3px 2px #3b5998;
+        box-shadow:         1px 1px 3px 2px #3b5998;">
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="row"style="height:55px;"></div>
+<div class="container" id="container4">
+  <div class="row" id="description">
+      <div class="col-md-4" id="font">
+        <h1 id="font">Step 1.</h1>
+        Create an account.
+      </div>
+      <div class="col-md-4" id="font">
+        <h1 id="font">Step 2.</h1>
+        Pin a location.
+      </div>
+      <div class="col-md-4" id="font">
+        <h1 id="font">Step 3.</h1>
+        Add information about your catch to your pin.
+      </div>
+  </div>
+  <div class="row"style="height:55px;"></div>
 
-  
-  <!--     ******************************* THIS BLOCK OF CODE PRINTS OUT THE LATITUDE AND LONGITUDE OF THE MARKERS CURRENT POSITION *********                                                     
+
+
+
+  <!--     ******************************* THIS BLOCK OF CODE PRINTS OUT THE LATITUDE AND LONGITUDE OF THE MARKERS CURRENT POSITION *********
   <div id="infoPanel">
     <b>Marker status:</b>
     <div id="markerStatus"><i>Click and drag the marker.</i></div><!-       ->
     <b>Current position:</b>
     <div id="info"></div>
     <b>Closest matching address:</b>
-    <div id="address"></div>  
-  </div>   
+    <div id="address"></div>
+  </div>
            ****************************************************************************************************************************  -->
- 
-    
-    
+
+
+
 </body>
 </html>
-
-
-
