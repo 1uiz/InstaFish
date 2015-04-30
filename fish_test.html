@@ -18,7 +18,7 @@ function geocodePosition(pos) {
       updateMarkerAddress('Cannot determine address at this location.');
     }
   });
-}
+}        
 
 function updateMarkerStatus(str) {
   document.getElementById('markerStatus').innerHTML = str;
@@ -43,10 +43,15 @@ function initialize() {
     center: latLng,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
+        
+  var image = 'Map_marker.png';
+
+    
   var marker = new google.maps.Marker({
     position: latLng,
-    title: 'Point A',
+    title: 'Drag Me!',
     map: map,
+    icon: image,
     draggable: true
   });
 
