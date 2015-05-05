@@ -1,6 +1,14 @@
 <?php
 
     session_start();
+
+    if (!isset($_SESSION['username'])){  //validates whether user has logged in
+        header("Location: login.html");
+    }
+    else{
+        header("Location: fish_test.php");
+    }
+    
     include 'test_dbConnection.php';
 
     $dbConn = getConnection();
