@@ -21,7 +21,7 @@ cursor:pointer
 height: 35px;
 width: 35px;
 }
-div#popupContact {
+div#popupDiv {
 position:absolute;
 left:50%;
 top:17%;
@@ -29,7 +29,7 @@ margin-left:-202px;
 font-family:'Raleway',sans-serif
 }
 #form {
-max-width:300px;
+max-width:400px;
 min-width:250px;
 padding:10px 50px;
 border:2px solid gray;
