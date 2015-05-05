@@ -1,3 +1,12 @@
+<?php
+
+    session_start();
+
+    if (!isset($_SESSION['username'])){  //validates whether user has logged in
+        header("Location: login.html");
+    }
+
+?>
 
 <html>
 <head>

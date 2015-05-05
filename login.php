@@ -46,7 +46,7 @@
         $stmt = $dbConn -> prepare($sql);
         $stmt -> execute($namedParameters);
 
-        header("Location: fish_test.html");
+        header("Location: fish_test.php");
     }
 
 ?>
