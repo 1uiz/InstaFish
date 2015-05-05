@@ -1,7 +1,7 @@
 <?php
 
     session_start();
-    include 'test_dbConnection.php';
+    include 'dbConnection.php';
 
     $dbConn = getConnection();
 
