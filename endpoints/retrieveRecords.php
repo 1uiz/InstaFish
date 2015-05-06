@@ -16,8 +16,7 @@
     }
     else if(isset($_POST['userID'])){
         $dbConn = getConnection();
-    
-        $sql = "SELECT * FROM userData";
+        $sql = "SELECT * FROM userData WHERE NOT userId=" . $_POST['userID'];
         $stmt = $dbConn -> prepare($sql);
         $stmt -> execute();
         $result = $stmt -> fetchAll();
