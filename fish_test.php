@@ -14,7 +14,7 @@
 <script src="js/my_js.js"></script>
 <link href="css/elements.css" rel="stylesheet">
 <script src="js/my_js.js"></script>
-
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
@@ -37,7 +37,7 @@ function geocodePosition(pos) {
 function updateMarkerStatus(str) {
   document.getElementById('markerStatus').innerHTML = str;
 }
-    
+
 
 
 function updateMarkerPosition(latLng) {
@@ -52,7 +52,7 @@ function updateMarkerAddress(str) {
 }
 
 function initialize() {
-    
+
     var userID = 15;
      $.ajax({
          type: "post",
@@ -72,7 +72,7 @@ function initialize() {
             	var fishType = data[x]['fishType'];
             	var amount = data[x]['amount'];
             	var picture = data[x]['profilePicture'];
-             	
+
              	var infoWindowContent = [
 		        ['<div class="info_content">' +
 		        '<h3>' + comment + '</h3>' +
@@ -82,15 +82,15 @@ function initialize() {
              	addMarker(map, infoWindowContent[0][0], location);
 			  	}
          },
-         
+
          complete: function(data, status){
               //alert(status);
              //$("#test").html(data, status);
          }
      });
-    
+
 }
-    
+
     function addMarker(map, name, location){
     var image = 'Map_marker.png';
 	var marker = new google.maps.Marker({
@@ -98,7 +98,7 @@ function initialize() {
         icon: image,
 		map: map
 	});
-	
+
 	google.maps.event.addListener(marker, 'click', function(){
         if(typeof infowindow != 'undefined') infowindow.close();
         infowindow = new google.maps.InfoWindow({
@@ -107,7 +107,7 @@ function initialize() {
 		infowindow.open(map,marker);
 	});
 }
-    
+
 google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 </head>
@@ -251,12 +251,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
         <button id="popup" onclick="div_show()" style="background-color:#377fa3;">Drop Pin!</button>
       </div>
     </div>
-  
+
     </body>
     </html>
 
 <script>
-    
+
  // ajax method to delete marker
  function deleteMarker(pinID){
         $.ajax({
@@ -272,9 +272,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
             }
         });
     }
-    
+
  function addMarker()
-    
+
 </script>
 
     <script>
@@ -288,10 +288,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
           document.getElementById('form').submit();
             // get all elements here
           alert("Form Submitted Successfully...");
-           
+
        }
     }
-        
+
     //Function To Display Popup
     function div_show() {
     document.getElementById('abc').style.display = "block";
