@@ -296,7 +296,14 @@ google.maps.event.addDomListener(window, 'load', initialize);
         });
     }
     
- function addMarker()
+ function addMarker(date, typeOfFish, amount, comments, fileName, latitude, longitude){
+     $.ajax({
+         type: "post",
+         url: "http://gallery-armani.codio.io:3000/Instafish/endpoints/insertRecords.php",
+         dataType: "json",
+         data: {"userID": <?=$_SESSION['userId']?>, "date": date, "fishType": typeOfFish, "comments": comments, "amount": amount, "latitude": latitude, "longitude": longitude}
+     })
+ }
     
 </script>
 
