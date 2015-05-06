@@ -229,14 +229,7 @@ function initialize() {
          }
      });
 
-
-}
-
-
-
     getAverage();
-
-
 }
 
 
@@ -292,64 +285,66 @@ google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 </head>
 
-  <style>
-  @font-face{
-  	font-family: customFont;
-  	src: url(fonts/Airstream.ttf);
-  }
-  #wrapper{
-    background: rgb(233, 234, 237);
-  }
+<style>
+@font-face{
+ font-family: customFont;
+ src: url(fonts/Airstream.ttf);
+}
+#wrapper{
+ background: rgb(233, 234, 237);
+}
 
-  #mapCanvas {
-    float: center;
-    height:300px;
-    padding-top:100px;
-
-  }
-  #myForm{
-      width: 500px;
-      height: 200px;
-      float: left;
-  }
-  #infoPanel {
-    float: left;
-    margin-left: 10px;
-  }
-  #infoPanel div {
-    margin-bottom: 5px;
-  }
-  #header{
-      width: 100%;
-      height: 50px;
-      background-color: #377fa3;
-  }
-  #banner{
-      float: right;
-      color: white;
-      margin: 15px;
-  }
-  #logout{
-    width:100px;
-    height:60px;
-  }
-  #name{
-    width:200px;
-  }
-  #title{
-    padding-left:20px;
-    font-size:55px;
-    color: #ffffff;
-    font-family: customFont;
-  }
-  #extraRow{
-    background-color: #377fa3;
-  }
-  #selectImage, #amount, #name{
-    text-align:center;
-    padding-top:10px;
-  }
-  </style>
+#mapCanvas {
+ height:400px;
+ width:100%;
+ margin: auto 0;
+}
+.row{
+ width:100%;
+ margin: auto 0;
+}
+#myForm{
+   width: 500px;
+   height: 200px;
+   float: left;
+}
+#infoPanel {
+ float: left;
+ margin-left: 10px;
+}
+#infoPanel div {
+ margin-bottom: 5px;
+}
+#header{
+   width: 100%;
+   background-color: #377fa3;
+}
+#logout{
+ margin-top:25px;
+ float:right;
+}
+#name{
+ width:200px;
+}
+#title{
+ padding-left:20px;
+ font-size:55px;
+ color: #ffffff;
+ font-family: customFont;
+}
+#selectImage, #amount, #name{
+ text-align:center;
+ padding-top:10px;
+}
+.container{
+ width:100%;
+ margin: auto 0;
+}
+#popup{
+ width:100%;
+ color:#ffffff;
+}
+</style>
   <body id="wrapper">
   <div class="container" id="header">
     <div class="row">
@@ -365,14 +360,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
   </div>
 
 
-  <div class="container" id="extraRow" style='height:55px;'>
-    <div class="row"></div>
-  </div>
   <div class="container">
     <div class="row">
       <div id="mapCanvas" style="-moz-box-shadow: 1px 1px 3px 2px #3b5998;
         -webkit-box-shadow: 1px 1px 3px 2px #3b5998;
-        box-shadow:         1px 1px 3px 2px #3b5998;">
+        box-shadow:         1px 1px 3px 2px #3b5998;width:100%; float:center;">
       </div>
     </div>
 
