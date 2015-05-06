@@ -2,7 +2,7 @@
     require "../functions/dbConnection.php";
     session_start();
     if(!isset($_POST['userID'])){
-        
+       
         echo "Error inserting to the database";
         
     }else if(isset($_POST['userID']) && isset($_POST['updatePin'])){
@@ -42,6 +42,8 @@
     else{
         $dbConn = getConnection();
         
+        // let's match up names from post to here.
+        var_dump($_POST);
         
         // TODO: Install exif module on production server
 	    $imageType = exif_imagetype($_FILES['fileName']['tmp_name']); // 1, 2, 3 for gif, jpg or png respectively.
@@ -54,7 +56,7 @@
 		    unlink($_FILES['fileName']['tmp_name']);
 	    } else{
             
-            $path = "img/" . $_SESSION['username'];
+            $path = "../img/" . $_SESSION['username'];
 	        if(!file_exists($path)){ // check whether the user's folder exists
 		        mkdir($path);
 	        }
