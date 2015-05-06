@@ -1,6 +1,5 @@
 <?php
     require "../functions/dbConnection.php";
-
     // Our db will only
    //  respond if the post request comes with a userID.
     // Return a query 
@@ -24,7 +23,6 @@
         
         echo json_encode($result);
     }
-
     // JOIN username table and posts for main page
     else if(isset($_POST['userID']) && isset($_POST['mainPage'])){
         $dbConn = getConnection();
@@ -41,7 +39,6 @@
         $stmt = $dbConn -> prepare($sql);
         $stmt -> execute();
         $result = $stmt -> fetchAll();
-
         echo json_encode($result);
     } else{
         echo "404. Page not found.";
