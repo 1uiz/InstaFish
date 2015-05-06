@@ -24,6 +24,17 @@
         
         echo json_encode($result);
     }
+
+    // JOIN username table and posts for main page
+    else if(isset($_POST['userID']) && isset($_POST['mainPage'])){
+        $dbConn = getConnection();
+        $sql = "SELECT * FROM userData p JOIN instaUsers";
+        $stmt = $dbConn -> prepare($sql);
+        $stmt -> execute();
+        $result = $stmt -> fetchAll();
+        
+        echo json_encode($result);
+    }
     else if(isset($_POST['userID'])){
         $dbConn = getConnection();
         $sql = "SELECT * FROM userData WHERE NOT userId=" . $_POST['userID'];
