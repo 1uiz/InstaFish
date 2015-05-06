@@ -5,7 +5,35 @@
         
         echo "Error inserting to the database";
         
-    } else{
+    }else if(isset($_POST['userID']) && isset($_POST['updatePin'])){
+        
+        // Update pin that belongs to a certain user.
+        $imageType = exif_imagetype($_FILES['fileName']['tmp_name']);
+        
+        if($imageType != -1 && $imageType != 2 && $imageType != 3){
+            echo json_encode(array("status" => "Cannot upload this file type"));
+            unlink($_FILES['fileName']['tmp_name']);
+        } else{
+            $fileName = $_FILES['fileName']['name'];
+            $pinID = $_POST['pinID'];
+            
+            move_uploaded_file($_FILES['fileName']['tmp_name'],   '../img/'. $_SESSION['username'] . "/" . $fileName);
+         
+            $dbConn = getConnection();
+	
+	         //  update database with the name of the file for the profile picture
+		
+            var_dump($_POST);   
+            $sql   = "UPDATE userData SET userID=" . $_POST['userID'] . ", time=" . $_POST['time'] . ", date='". $_POST['date'] . "', fishType='" . $_POST['fishType'] . "', amount=" . $_POST['amount'] . ", latitude=" . $_POST['userID'] . ", longitude=" . $_POST['userID'] .  ", comments='" . $_POST['comments'] . "', fishPicture='" . $fileName . "' WHERE pinID=" . $pinID;
+	
+	        $stmt = $dbConn -> prepare($sql);
+	        $stmt -> execute();
+	        echo json_encode(array("status" => "success!"));
+            
+        }
+    }
+
+    else{
         $dbConn = getConnection();
         
         
@@ -31,7 +59,7 @@
             if(file_exists("img/" . $fileName)){
                 echo json_encode(array("status" => "File exists"));
             } else{
-	        move_uploaded_file($_FILES['fileName']['tmp_name'],   'img/'. $_SESSION['username'] . "/" . $fileName);
+	        move_uploaded_file($_FILES['fileName']['tmp_name'],   '../img/'. $_SESSION['username'] . "/" . $fileName);
          
 	
 	         //  update database with the name of the file for the profile picture

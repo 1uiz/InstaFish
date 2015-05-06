@@ -2,6 +2,9 @@
 
     session_start();
 
+    include 'functions/dbConnection.php';
+
+
     if (!isset($_SESSION['username'])){  //validates whether user has logged in
         header("Location: login.html");
     }
@@ -9,7 +12,6 @@
         header("Location: fish_test.php");
     }
     
-    include 'test_dbConnection.php';
 
     $dbConn = getConnection();
 
