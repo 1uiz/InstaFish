@@ -70,6 +70,7 @@ function getUserPins(){
 		     console.log("get user pins success");
              console.log("Size: " + data.length);
              for(var x = 0; x < data.length; x++){
+               var pinID = data[x]['pinId'];
              	var location = new google.maps.LatLng(data[x]['latitude'], data[x]['longitude']);
              	var comment = data[x]['comments'];
             	var date = data[x]['date'];
@@ -80,11 +81,11 @@ function getUserPins(){
                  console.log("Here: " + picturePath);
              	var infoWindowContent = [
 		        ['<div class="info_content">' +
-		        '<h3>' + comment + '</h3>' + '<p hidden>' + userID + "</p>" + 
+		        '<h3>' + comment + '</h3>' + '<p hidden>' + pinID + "</p>" + 
 		        '<p><strong>Date:</strong> '+ date +' <br/><strong>Type of fish:</strong> ' + fishType + ' <br/><strong>Amount caught:</strong> ' + amount + '</p>' +
 		        '<img src=' + picturePath + ' height=125px width=100px/>'+'</div>']
 		    ];
-             	addUserMarkers(map, infoWindowContent[0][0], location);
+             	addUserMarkers(map, infoWindowContent[0][0], location, pinID);
 			  	}
          },
          
@@ -98,7 +99,28 @@ function getUserPins(){
     });
 }
     
-
+function deleteUserPin(userID, userPin){
+    console.log("Delete user pins");
+    $.ajax({
+        type: "post",
+        url: "http://gallery-armani.codio.io:3000/Instafish/endpoints/insertRecords.php",
+        dataType: "json",
+        data: {"userID": userID, "pinID" : userPin, "deletePin": 1},
+        success: function(data, status){
+            console.log("delete success");
+            for(var x = 0; x < userMarkers.length; x++){
+                if(userMarkers[x]['ID'] == userPin){
+                    console.log("Found markers");
+                    userMarkers[x].setMap(null);
+                }
+            }
+        },
+        complete: function(data, status){
+            setTimeout(function(){getUserPins()},3000);
+        }
+            
+    });
+}
 
 function initialize() {
     
@@ -108,7 +130,7 @@ function initialize() {
     latitude = 36.600344;
     longitude = -121.787797;
     var pinMessage = "Drag and pin me!";
-    
+    userMarkers = [];
     
     
     var infoWindow = new google.maps.InfoWindow({
@@ -182,7 +204,7 @@ function initialize() {
     
 
     // add markers that belong to signed in user
-    function addUserMarkers(map, name, location){
+    function addUserMarkers(map, name, location, pinID){
         console.log("addUserMarker");
         var icon = {
             url: "fishIcon.png", // url
@@ -193,8 +215,11 @@ function initialize() {
         var marker = new google.maps.Marker({
             position: location,
             icon: icon,
-            map: map
+            map: map,
+            ID: pinID
         });
+        
+        userMarkers.push(marker);
         
         google.maps.event.addListener(marker, 'click', function(){
             if(typeof infowindow != 'undefined') infowindow.close();
