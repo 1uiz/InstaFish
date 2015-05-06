@@ -1,3 +1,12 @@
+<?php
+
+    session_start();
+
+    if (!isset($_SESSION['username'])){  //validates whether user has logged in
+        header("Location: login.html");
+    }
+
+?>
 
 <html>
 <head>
@@ -101,9 +110,9 @@ function initialize() {
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
-  // Update current position info.
+  /*// Update current position info.
   updateMarkerPosition(latLng);
-  geocodePosition(latLng);
+  geocodePosition(latLng);*/
 
   // Add dragging event listeners.
   google.maps.event.addListener(marker, 'dragstart', function() {
@@ -123,17 +132,20 @@ google.maps.event.addDomListener(window, 'load', initialize);
 google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 </head>
-<body id="wrapper">
 
   <style>
+  @font-face{
+  	font-family: customFont;
+  	src: url(fonts/Airstream.ttf);
+  }
   #wrapper{
     background: rgb(233, 234, 237);
   }
 
   #mapCanvas {
-    width: 100%;
-    height: 400px;
     float: center;
+    height:400px;
+    padding-top:100px;
 
   }
   #myForm{
@@ -165,29 +177,49 @@ google.maps.event.addDomListener(window, 'load', initialize);
   #name{
     width:200px;
   }
-  button{
-    background-color: #ffffff;z
-    width: 100px;
+  #title{
+    padding-left:20px;
+    font-size:55px;
+    color: #ffffff;
+    font-family: customFont;
   }
-  /*#form{
-    text-align: center;
-  }*/
+  #extraRow{
+    background-color: #377fa3;
+  }
+  #selectImage, #amount, #name{
+    text-align:center;
+    padding-top:10px;
+  }
   </style>
-    <div id="header">
-       <header id="banner">
-         <form action="logout.php">
-           <input type="submit" value="Logout" id="logout"></input>
-         </form>
-       </header>
+  <body id="wrapper">
+  <div class="container" id="header">
+    <div class="row">
+        <div class="col-xs-6">
+          <h1 id="title">InstaFish</h1>
+        </div>
+        <div class="col-xs-6">
+          <form action="logout.php">
+            <input type="submit" value="Logout" id="logout"></input>
+          </form>
+        </div>
     </div>
+  </div>
 
 
-  <div id="mapCanvas" style="-moz-box-shadow: 1px 1px 3px 2px #3b5998;
-  -webkit-box-shadow: 1px 1px 3px 2px #3b5998;
-  box-shadow:         1px 1px 3px 2px #3b5998;"></div>
+  <div class="container" id="extraRow" style='height:55px;'>
+    <div class="row"></div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div id="mapCanvas" style="-moz-box-shadow: 1px 1px 3px 2px #3b5998;
+        -webkit-box-shadow: 1px 1px 3px 2px #3b5998;
+        box-shadow:         1px 1px 3px 2px #3b5998;">
+      </div>
+    </div>
+  </div>
 
 
-  <!--     ******************************* THIS BLOCK OF CODE PRINTS OUT THE LATITUDE AND LONGITUDE OF THE MARKERS CURRENT POSITION *********
+  <!--******************************* THIS BLOCK OF CODE PRINTS OUT THE LATITUDE AND LONGITUDE OF THE MARKERS CURRENT POSITION *********
   <div id="infoPanel">
     <b>Marker status:</b>
     <div id="markerStatus"><i>Click and drag the marker.</i></div><!-       ->
@@ -196,7 +228,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
     <b>Closest matching address:</b>
     <div id="address"></div>
   </div>
-           ****************************************************************************************************************************  -->
+           ****************************************************************************************************************************-->
     <!--<div id="fishForm">
        <fieldset id="myForm" style="background-color: #f7f7f7">
             Catch date (date and time):<input type="datetime-local" name="bdaytime" style="background-color:white"><br/>
@@ -227,7 +259,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
                 <div>Type of fish: <input id="name" name="name" placeholder="Type of fish" type="text"></div>
                 <div>Amount: <input type="number" min="0" name="amount" id="amount" style="background-color:white"></div>
                 <div>Comments: <textarea id="comment" placeholder="Share some info that could help others."></textarea></div>
-                <div>Select image:<input type="file" name="fileName"/></div>
+                <div>Select image:<input type="file" id="selectImage" name="fileName"/></div>
                     <br/>
                     <br/>
                 <button id="addInfo" onclick="check_empty()">Add</button>
@@ -235,8 +267,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
         </div>
     </div>
     <br/>
-    <button id="popup" onclick="div_show()" style="background-color:#377fa3;">Drop Pin!</button>
-
+    <div class="container">
+      <div class="row">
+        <button id="popup" onclick="div_show()" style="background-color:#377fa3;">Drop Pin!</button>
+      </div>
+    </div>
+  </div>
     </body>
     </html>
 
