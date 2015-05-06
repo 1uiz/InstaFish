@@ -22,6 +22,7 @@ var geocoder = new google.maps.Geocoder();
 var latitude = 0.0;
 var longitude = 0.0;
 var average = 0.0;
+var total = 0.0;
 function geocodePosition(pos) {
   geocoder.geocode({
     latLng: pos
@@ -68,8 +69,14 @@ function getAverage(){
         data: {"userID": userID, "thisUserAverage": "1"},
         success: function(data, status){
             console.log("getAverage is successful");
-            average = data[0]["avg"];
-           
+            if(data[0]["avg"] == null){
+                average = 0.0;
+            } else{
+                
+                average = data[0]["avg"];
+            }
+            $("#stats").html("Average of your catches: " + average + "<br />Total number of catches: " + total);
+            
             // Display average on div
         },
         complete: function(data, status){
@@ -89,6 +96,7 @@ function getUserPins(){
          success: function(data, status){
 		     console.log("get user pins success");
              console.log("Size: " + data.length);
+             total = data.length;
              for(var x = 0; x < data.length; x++){
                var pinID = data[x]['pinId'];
              	var location = new google.maps.LatLng(data[x]['latitude'], data[x]['longitude']);
@@ -220,6 +228,7 @@ function initialize() {
      });
     
     
+    getAverage();
     
     
 }
@@ -267,6 +276,8 @@ function initialize() {
         });
 		infowindow.open(map,marker);
 	});
+        
+        
 }
     
 google.maps.event.addDomListener(window, 'load', initialize);
@@ -357,6 +368,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
         box-shadow:         1px 1px 3px 2px #3b5998;">
       </div>
     </div>
+      
+    
   </div>
 
 
@@ -415,6 +428,14 @@ google.maps.event.addDomListener(window, 'load', initialize);
       <div class="row">
         <button id="popup" onclick="div_show()" style="background-color:#377fa3;">Drop Pin!</button>
       </div>
+        <div class="row">
+        <div id="userStats">
+            <h3 style="text-align: center">Stats of your catches!</h3>
+            <div id="stats">
+                
+            </div>
+        </div>
+      </div>
     </div>
   
     </body>
@@ -472,7 +493,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
     $('#amount').value = "";
      
     $('#comments').value = "";
-    setTimeout(function(){getUserPins()},3000);
+    setTimeout(function(){getUserPins(); getAverage();},3000);
      console.log("Does it work now?");
  }
 
