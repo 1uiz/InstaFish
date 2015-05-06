@@ -10,6 +10,7 @@
 
 <html>
 <head>
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 <script src="js/my_js.js"></script>
 <link href="css/elements.css" rel="stylesheet">
 <script src="js/my_js.js"></script>
@@ -51,86 +52,62 @@ function updateMarkerAddress(str) {
 }
 
 function initialize() {
-
-  var map;
-  var bounds = new google.maps.LatLngBounds();
-  var mapOptions = {
-  mapTypeId: google.maps.MapTypeId.ROADMAP
-  };
-
-  map = new google.maps.Map(document.getElementById("mapCanvas"), mapOptions);
-
-  //IMAGE/ Geopoint icon.
-  var image = 'Map_marker.png';
-    // Multiple Markers
-    var markers = [
-        ['Salinas, California', 36.665433, -121.651498],
-        ['Palace of Westminster, London', 51.499633,-0.124755]
-    ];
-
-    // Info Window Content
-    var infoWindowContent = [
-        ['<div class="info_content">' +
-        '<h3>Salinas, California</h3>' +
-        '<p><strong>Date:</strong> 05/044/2015 <br/><strong>Type of fish:</strong> Sardine <br/><strong>Amount caught:</strong> 5</p>' +
-        '<img src=img/sardine.jpg height=125px width=100px/>'+'</div>'],
-        ['<div class="info_content">' +
-        '<h3>Palace of Westminster</h3>' +
-        '<p><strong>Date:</strong> 05/044/2015 <br/><strong>Type of fish:</strong> Sardine <br/><strong>Amount caught:</strong> 5</p>' +
-        '<img src=img/sardine.jpg height=125px width=100px/>'+'</div>']
-    ];
-
-    // Display multiple markers on a map
-    var infoWindow = new google.maps.InfoWindow(), marker, i;
-
-    // Loop through our array of markers & place each one on the map
-    for( i = 0; i < markers.length; i++ ) {
-        var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
-        bounds.extend(position);
-        marker = new google.maps.Marker({
-            position: position,
-            map: map,
-            icon: image,
-            title: markers[i][0]
-        });
-
-        // Allow each marker to have an info window
-        google.maps.event.addListener(marker, 'click', (function(marker, i) {
-            return function() {
-                infoWindow.setContent(infoWindowContent[i][0]);
-                infoWindow.open(map, marker);
-            }
-        })(marker, i));
-
-        // Automatically center the map fitting all markers on the screen
-        map.fitBounds(bounds);
-    }
-
-  google.maps.event.addListener(marker, 'click', function() {
-    infowindow.open(map, marker);
-  });
-
-google.maps.event.addDomListener(window, 'load', initialize);
-
-  /*// Update current position info.
-  updateMarkerPosition(latLng);
-  geocodePosition(latLng);*/
-
-  // Add dragging event listeners.
-  google.maps.event.addListener(marker, 'dragstart', function() {
-    updateMarkerAddress('Dragging...');
-  });
-
-  google.maps.event.addListener(marker, 'drag', function() {
-    updateMarkerStatus('Dragging...');
-    updateMarkerPosition(marker.getPosition());
-  });
-
-  google.maps.event.addListener(marker, 'dragend', function() {
-    updateMarkerStatus('Drag ended');
-    geocodePosition(marker.getPosition());
-  });
+    
+    var userID = 15;
+     $.ajax({
+         type: "post",
+         url: "http://45.55.190.168/InstaFish/endpoints/retrieveRecords.php",
+         dataType: "json",
+         data: {"userID": userID},
+         success: function(data, status){
+  			var map = new google.maps.Map(document.getElementById('mapCanvas'), {
+			center: new google.maps.LatLng(data[0]['latitude'], data[0]['longitude']),
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			zoom: 5
+		});
+             for(var x = 0; x < data.length; x++){
+             	var location = new google.maps.LatLng(data[x]['latitude'], data[x]['longitude']);
+             	var comment = data[x]['comments'];
+            	var date = data[x]['date'];
+            	var fishType = data[x]['fishType'];
+            	var amount = data[x]['amount'];
+            	var picture = data[x]['profilePicture'];
+             	
+             	var infoWindowContent = [
+		        ['<div class="info_content">' +
+		        '<h3>' + comment + '</h3>' +
+		        '<p><strong>Date:</strong> '+ date +' <br/><strong>Type of fish:</strong> ' + fishType + ' <br/><strong>Amount caught:</strong> ' + amount + '</p>' +
+		        '<img src=' + picture + ' height=125px width=100px/>'+'</div>']
+		    ];
+             	addMarker(map, infoWindowContent[0][0], location);
+			  	}
+         },
+         
+         complete: function(data, status){
+              //alert(status);
+             //$("#test").html(data, status);
+         }
+     });
+    
 }
+    
+    function addMarker(map, name, location){
+    var image = 'Map_marker.png';
+	var marker = new google.maps.Marker({
+		position: location,
+        icon: image,
+		map: map
+	});
+	
+	google.maps.event.addListener(marker, 'click', function(){
+        if(typeof infowindow != 'undefined') infowindow.close();
+        infowindow = new google.maps.InfoWindow({
+            content: name
+        });
+		infowindow.open(map,marker);
+	});
+}
+    
 google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 </head>
