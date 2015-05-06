@@ -21,6 +21,7 @@
 var geocoder = new google.maps.Geocoder();
 var latitude = 0.0;
 var longitude = 0.0;
+var average = 0.0;
 function geocodePosition(pos) {
   geocoder.geocode({
     latLng: pos
@@ -57,7 +58,26 @@ function getLatitude(latLng){
 function getLongitude(latLng){
     return latLng.lng();
 }
-    
+   
+function getAverage(){
+    console.log("getAverage");
+    $.ajax({
+        type: "post",
+        url: "http://gallery-armani.codio.io:3000/Instafish/endpoints/retrieveRecords.php",
+        dataType: "json",
+        data: {"userID": userID, "thisUserAverage": "1"},
+        success: function(data, status){
+            console.log("getAverage is successful");
+            average = data[0]["avg"];
+           
+            // Display average on div
+        },
+        complete: function(data, status){
+            console.log("getAverage complete");
+        }
+        
+    });
+}    
 
 function getUserPins(){
     console.log("getUserPins");
@@ -78,11 +98,12 @@ function getUserPins(){
             	var amount = data[x]['amount'];
             	var picture = data[x]['fishPicture'];
              	var picturePath = "img/" + username + "/" + picture;
+                var weight = data[x]['weight'];
                  console.log("Here: " + picturePath);
              	var infoWindowContent = [
 		        ['<div class="info_content">' +
 		        '<h3>' + comment + '</h3>' + '<p hidden>' + pinID + "</p>" + 
-		        '<p><strong>Date:</strong> '+ date +' <br/><strong>Type of fish:</strong> ' + fishType + ' <br/><strong>Amount caught:</strong> ' + amount + '</p>' +
+		        '<p><strong>Date:</strong> '+ date + ' <br/><strong>Weight:</strong> ' + weight + ' <br/><strong>Type of fish:</strong> ' + fishType + ' <br/><strong>Amount caught:</strong> ' + amount + '</p>' +
 		        '<img src=' + picturePath + ' height=125px width=100px/>'+'</div>']
 		    ];
              	addUserMarkers(map, infoWindowContent[0][0], location, pinID);
@@ -180,10 +201,11 @@ function initialize() {
              	console.log("Picture " + picture);
                 var picturePath = "img/" + username + "/" + picture;
                 console.log(picturePath);
+                var weight = data[x]['weight'];
              	var infoWindowContent = [
 		        ['<div class="info_content">' +
 		        '<h3>' + comment + '</h3>' +
-		        '<p><strong>Date:</strong> '+ date +' <br/><strong>Type of fish:</strong> ' + fishType + ' <br/><strong>Amount caught:</strong> ' + amount + '</p>' +
+		        '<p><strong>Date:</strong> '+ date +' <br/><strong>Weight:</strong> ' + weight + '<br/><strong>Type of fish:</strong> ' + fishType + ' <br/><strong>Amount caught:</strong> ' + amount + '</p>' +
 		        '<img src=' + picturePath +  ' height="125px width=100px"/>'+'</div>']
 		    ];
                  console.log('<img src=' + picturePath +  ' height=125px width=100px/>');
@@ -263,7 +285,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
   #mapCanvas {
     float: center;
-    height:400px;
+    height:300px;
     padding-top:100px;
 
   }
@@ -377,7 +399,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
                 <div>Enter the date: <input id="datepicker" name="date" placeholder="xx/xx/xxxx"/></div>
                 <div>Type of fish: <input id="name" name="fishType" placeholder="Type of fish" type="text"></div>
                 <div>Amount: <input type="number" min="0" name="amount" id="amount" style="background-color:white"></div>
+                <div>Weight of catch: <input type="number" min="1" name="weight" id="weight" style="backgroun-color:white"> </div>
+                   
                 <div>Comments: <textarea id="comment" name="comments" placeholder="Share some info that could help others."></textarea></div>
+                
                 <div>Select image:<input type="file" id="selectImage" name="fileName"/></div>
                     <br/>
                     <br/>
@@ -465,11 +490,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
                 var typeOfFish = $('#name').val();
                 var amount = $('#amount').val();
                 var comments = $('#comments').val();
+                var weight  = $("#weight").val();
                 console.log(date)
                 console.log(typeOfFish)
                 console.log(amount)
                 console.log(comments)
-                
+                console.log(weight);
                 addFishingLocation(date, typeOfFish, amount, comments);
           
             // get all elements here to insert to form

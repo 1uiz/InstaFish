@@ -1,4 +1,4 @@
-<?php
+    <?php
     require "../functions/dbConnection.php";
     session_start();
     if(!isset($_POST['userID'])){
@@ -24,7 +24,7 @@
 	         //  update database with the name of the file for the profile picture
 		
              
-            $sql   = "UPDATE userData SET userID=" . $_POST['userID'] . ", time=" . $_POST['time'] . ", date='". $_POST['date'] . "', fishType='" . $_POST['fishType'] . "', amount=" . $_POST['amount'] . ", latitude=" . $_POST['userID'] . ", longitude=" . $_POST['userID'] .  ", comments='" . $_POST['comments'] . "', fishPicture='" . $fileName . "' WHERE pinID=" . $pinID;
+            $sql   = "UPDATE userData SET userID=" . $_POST['userID'] . ", time=" . $_POST['time'] . ", weight='" . $_POST['weight'] .  ", date='". $_POST['date'] . "', fishType='" . $_POST['fishType'] . "', amount=" . $_POST['amount'] . ", latitude=" . $_POST['userID'] . ", longitude=" . $_POST['userID'] .  ", comments='" . $_POST['comments'] . "', fishPicture='" . $fileName . "' WHERE pinID=" . $pinID;
 	
 	        $stmt = $dbConn -> prepare($sql);
 	        $stmt -> execute();
@@ -72,7 +72,7 @@
 	
 	         //  update database with the name of the file for the profile picture
 		
-            $sql   = "INSERT INTO userData (userId, time, date, fishType, comments, amount, latitude, longitude, fishPicture) VALUES (:userID, :time, :date, :fishType, :comments, :amount, :latitude, :longitude, :fishPicture)";
+            $sql   = "INSERT INTO userData (userId, time, date, fishType, comments, amount, latitude, longitude, fishPicture, weight) VALUES (:userID, :time, :date, :fishType, :comments, :amount, :latitude, :longitude, :fishPicture, :catchWeight)";
 	        $namedParameters = array();
 	        $namedParameters[":userID"] = $_POST['userID'];
             $namedParameters[":time"] = $_POST['time'];
@@ -83,6 +83,7 @@
             $namedParameters[":latitude"] = $_POST['latitude'];
             $namedParameters[":longitude"] = $_POST['longitude'];
             $namedParameters[":fishPicture"] = $fileName;
+            $namedParameters[":catchWeight"] = $_POST['weight'];
             
 	
 	        $stmt = $dbConn -> prepare($sql);
