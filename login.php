@@ -45,6 +45,7 @@
         // insert log record to database
         $_SESSION['username'] = $result['username'];
         $_SESSION['adminName'] = $result['firstName'] . " " . $result['lastName'];
+        $_SESSION['userID'] = $result['userID'];
 
 
         $sql = "INSERT INTO log (userName, userId, isSuccesfullLogin) VALUES (:uName, :uId, :isSuccessful)";
