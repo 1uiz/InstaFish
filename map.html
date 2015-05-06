@@ -9,22 +9,22 @@
       html, body, #map-canvas {
         height: 100%;
         margin: 0px;
-        padding: 0px
+        padding: 0px;
       }
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
-    
-    
+
+
     <script>
 // This example displays a marker at the center of Australia.
 // When the user clicks the marker, an info window opens.
 
     var infowindow;
-    
-        
+
+
 function initialize() {
-	
-	
+
+
 	var userID = 15;
      $.ajax({
          type: "post",
@@ -44,7 +44,7 @@ function initialize() {
             	var fishType = data[x]['fishType'];
             	var amount = data[x]['amount'];
             	var picture = data[x]['profilePicture'];
-             	
+
              	var infoWindowContent = [
 		        ['<div class="info_content">' +
 		        '<h3>' + comment + '</h3>' +
@@ -54,21 +54,21 @@ function initialize() {
              	addMarker(map, infoWindowContent[0][0], location);
 			  	}
          },
-         
+
          complete: function(data, status){
               //alert(status);
              //$("#test").html(data, status);
          }
      });
-  
+
   }
-  
+
 function addMarker(map, name, location){
 	var marker = new google.maps.Marker({
 		position: location,
 		map: map
 	});
-	
+
 	google.maps.event.addListener(marker, 'click', function(){
         if(typeof infowindow != 'undefined') infowindow.close();
         infowindow = new google.maps.InfoWindow({

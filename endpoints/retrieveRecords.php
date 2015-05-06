@@ -14,19 +14,10 @@
         
         echo json_encode($result);
     }
-    // aggregate function to get average of catches
-    else if(isset($_POST['userID']) && isset($_POST['thisUserAverage'])){
-        $dbConn = getConnection();
-        $sql = "SELECT AVG(weight) AS avg FROM userData WHERE userId=" . $_POST['userID'];
-        $stmt = $dbConn -> prepare($sql);
-        $stmt -> execute();
-        $result = $stmt -> fetchAll();
-        
-        echo json_encode($result);
-    }
     else if(isset($_POST['userID'])){
         $dbConn = getConnection();
-        $sql = "SELECT * FROM userData WHERE NOT userId=" . $_POST['userID'];
+    
+        $sql = "SELECT * FROM userData";
         $stmt = $dbConn -> prepare($sql);
         $stmt -> execute();
         $result = $stmt -> fetchAll();

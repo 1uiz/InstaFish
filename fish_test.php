@@ -12,6 +12,8 @@
 <head>
 <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 <link href="css/elements.css" rel="stylesheet">
+<script src="js/my_js.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
@@ -38,7 +40,7 @@ function geocodePosition(pos) {
 function updateMarkerStatus(str) {
   document.getElementById('markerStatus').innerHTML = str;
 }
-    
+
 
 
 function updateMarkerPosition(latLng) {
@@ -51,15 +53,15 @@ function updateMarkerPosition(latLng) {
 function updateMarkerAddress(str) {
   document.getElementById('address').innerHTML = str;
 }
-    
+
 function getLatitude(latLng){
     return latLng.lat();
 }
-    
+
 function getLongitude(latLng){
     return latLng.lng();
 }
-   
+
 function getAverage(){
     console.log("getAverage");
     $.ajax({
@@ -72,19 +74,19 @@ function getAverage(){
             if(data[0]["avg"] == null){
                 average = 0.0;
             } else{
-                
+
                 average = data[0]["avg"];
             }
             $("#stats").html("Average of your catches: " + average + "<br />Total number of catches: " + total);
-            
+
             // Display average on div
         },
         complete: function(data, status){
             console.log("getAverage complete");
         }
-        
+
     });
-}    
+}
 
 function getUserPins(){
     console.log("getUserPins");
@@ -110,16 +112,16 @@ function getUserPins(){
                  console.log("Here: " + picturePath);
              	var infoWindowContent = [
 		        ['<div class="info_content">' +
-		        '<h3>' + comment + '</h3>' + '<p hidden>' + pinID + "</p>" + 
+		        '<h3>' + comment + '</h3>' + '<p hidden>' + pinID + "</p>" +
 		        '<p><strong>Date:</strong> '+ date + ' <br/><strong>Weight:</strong> ' + weight + ' <br/><strong>Type of fish:</strong> ' + fishType + ' <br/><strong>Amount caught:</strong> ' + amount + '</p>' +
 		        '<img src=' + picturePath + ' height=125px width=100px/>'+'</div>']
 		    ];
              	addUserMarkers(map, infoWindowContent[0][0], location, pinID);
 			  	}
          },
-         
+
          complete: function(data, status){
-              console.log("getUserPins failure") 
+              console.log("getUserPins failure")
               console.log(data);
               console.log(status);
               //alert(status);
@@ -127,7 +129,7 @@ function getUserPins(){
          }
     });
 }
-    
+
 function deleteUserPin(userID, userPin){
     console.log("Delete user pins");
     $.ajax({
@@ -147,12 +149,11 @@ function deleteUserPin(userID, userPin){
         complete: function(data, status){
             setTimeout(function(){getUserPins()},3000);
         }
-            
+
     });
 }
 
 function initialize() {
-    
     userID = <?=$_SESSION['userID']?>;
     username = "<?=$_SESSION['username']?>";
     var centerLatLng = new google.maps.LatLng(36.600344, -121.787797);
@@ -160,45 +161,45 @@ function initialize() {
     longitude = -121.787797;
     var pinMessage = "Drag and pin me!";
     userMarkers = [];
-    
-    
+
+
     var infoWindow = new google.maps.InfoWindow({
         content: pinMessage
     })
-    
+
     map = new google.maps.Map(document.getElementById('mapCanvas'), {
 			center: centerLatLng,
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 			zoom: 10
 		});
-    
+
     var dragMarker = new google.maps.Marker({
         position: centerLatLng,
         title: "Pin me!",
         map: map,
         draggable: true
-        
+
     });
-    
+
     infoWindow.open(map, dragMarker);
-    
-    //events 
+
+    //events
     google.maps.event.addListener(dragMarker, 'dragend', function(){
         latitude = getLatitude(dragMarker.getPosition());
         longitude = getLongitude(dragMarker.getPosition());
         console.log(getLatitude(dragMarker.getPosition()));
         console.log(getLongitude(dragMarker.getPosition()));
     })
-    
+
     getUserPins();
-    
+
      $.ajax({
          type: "post",
          url: "http://gallery-armani.codio.io:3000/Instafish/endpoints/retrieveRecords.php",
          dataType: "json",
          data: {"userID": userID},
          success: function(data, status){
-  			
+
              for(var x = 0; x < data.length; x++){
              	var location = new google.maps.LatLng(data[x]['latitude'], data[x]['longitude']);
              	var comment = data[x]['comments'];
@@ -210,6 +211,7 @@ function initialize() {
                 var picturePath = "img/" + username + "/" + picture;
                 console.log(picturePath);
                 var weight = data[x]['weight'];
+
              	var infoWindowContent = [
 		        ['<div class="info_content">' +
 		        '<h3>' + comment + '</h3>' +
@@ -220,19 +222,16 @@ function initialize() {
              	addMarker(map, infoWindowContent[0][0], location);
 			  	}
          },
-         
+
          complete: function(data, status){
               //alert(status);
              //$("#test").html(data, status);
          }
      });
-    
-    
+
     getAverage();
-    
-    
 }
-    
+
 
     // add markers that belong to signed in user
     function addUserMarkers(map, name, location, pinID){
@@ -240,18 +239,18 @@ function initialize() {
         var icon = {
             url: "fishIcon.png", // url
             scaledSize: new google.maps.Size(50, 50), // scaled size
-            
+
         };
-        
+
         var marker = new google.maps.Marker({
             position: location,
             icon: icon,
             map: map,
             ID: pinID
         });
-        
+
         userMarkers.push(marker);
-        
+
         google.maps.event.addListener(marker, 'click', function(){
             if(typeof infowindow != 'undefined') infowindow.close();
             infowindow = new google.maps.InfoWindow({
@@ -260,7 +259,8 @@ function initialize() {
             infowindow.open(map,marker);
         })
     }
-    
+
+
     function addMarker(map, name, location){
     var image = 'Map_marker.png';
 	var marker = new google.maps.Marker({
@@ -268,7 +268,7 @@ function initialize() {
         icon: image,
 		map: map
 	});
-	
+
 	google.maps.event.addListener(marker, 'click', function(){
         if(typeof infowindow != 'undefined') infowindow.close();
         infowindow = new google.maps.InfoWindow({
@@ -276,73 +276,75 @@ function initialize() {
         });
 		infowindow.open(map,marker);
 	});
-        
-        
+
+
 }
-    
+
 google.maps.event.addDomListener(window, 'load', initialize);
 
 </script>
 </head>
 
-  <style>
-  @font-face{
-  	font-family: customFont;
-  	src: url(fonts/Airstream.ttf);
-  }
-  #wrapper{
-    background: rgb(233, 234, 237);
-  }
+<style>
+@font-face{
+ font-family: customFont;
+ src: url(fonts/Airstream.ttf);
+}
+#wrapper{
+ background: rgb(233, 234, 237);
+}
 
-  #mapCanvas {
-    float: center;
-    height:300px;
-    padding-top:100px;
-
-  }
-  #myForm{
-      width: 500px;
-      height: 200px;
-      float: left;
-  }
-  #infoPanel {
-    float: left;
-    margin-left: 10px;
-  }
-  #infoPanel div {
-    margin-bottom: 5px;
-  }
-  #header{
-      width: 100%;
-      height: 50px;
-      background-color: #377fa3;
-  }
-  #banner{
-      float: right;
-      color: white;
-      margin: 15px;
-  }
-  #logout{
-    width:100px;
-    height:60px;
-  }
-  #name{
-    width:200px;
-  }
-  #title{
-    padding-left:20px;
-    font-size:55px;
-    color: #ffffff;
-    font-family: customFont;
-  }
-  #extraRow{
-    background-color: #377fa3;
-  }
-  #selectImage, #amount, #name{
-    text-align:center;
-    padding-top:10px;
-  }
-  </style>
+#mapCanvas {
+ height:400px;
+ width:100%;
+ margin: auto 0;
+}
+.row{
+ width:100%;
+ margin: auto 0;
+}
+#myForm{
+   width: 500px;
+   height: 200px;
+   float: left;
+}
+#infoPanel {
+ float: left;
+ margin-left: 10px;
+}
+#infoPanel div {
+ margin-bottom: 5px;
+}
+#header{
+   width: 100%;
+   background-color: #377fa3;
+}
+#logout{
+ margin-top:25px;
+ float:right;
+}
+#name{
+ width:200px;
+}
+#title{
+ padding-left:20px;
+ font-size:55px;
+ color: #ffffff;
+ font-family: customFont;
+}
+#selectImage, #amount, #name{
+ text-align:center;
+ padding-top:10px;
+}
+.container{
+ width:100%;
+ margin: auto 0;
+}
+#popup{
+ width:100%;
+ color:#ffffff;
+}
+</style>
   <body id="wrapper">
   <div class="container" id="header">
     <div class="row">
@@ -358,18 +360,15 @@ google.maps.event.addDomListener(window, 'load', initialize);
   </div>
 
 
-  <div class="container" id="extraRow" style='height:55px;'>
-    <div class="row"></div>
-  </div>
   <div class="container">
     <div class="row">
       <div id="mapCanvas" style="-moz-box-shadow: 1px 1px 3px 2px #3b5998;
         -webkit-box-shadow: 1px 1px 3px 2px #3b5998;
-        box-shadow:         1px 1px 3px 2px #3b5998;">
+        box-shadow:         1px 1px 3px 2px #3b5998;width:100%; float:center;">
       </div>
     </div>
-      
-    
+
+
   </div>
 
 
@@ -413,9 +412,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
                 <div>Type of fish: <input id="name" name="fishType" placeholder="Type of fish" type="text"></div>
                 <div>Amount: <input type="number" min="0" name="amount" id="amount" style="background-color:white"></div>
                 <div>Weight of catch: <input type="number" min="1" name="weight" id="weight" style="backgroun-color:white"> </div>
-                   
+
                 <div>Comments: <textarea id="comment" name="comments" placeholder="Share some info that could help others."></textarea></div>
-                
+
                 <div>Select image:<input type="file" id="selectImage" name="fileName"/></div>
                     <br/>
                     <br/>
@@ -432,19 +431,19 @@ google.maps.event.addDomListener(window, 'load', initialize);
         <div id="userStats">
             <h3 style="text-align: center">Stats of your catches!</h3>
             <div id="stats">
-                
+
             </div>
         </div>
       </div>
     </div>
-  
+
     </body>
     </html>
 
 <script>
-    
+
  // ajax method to delete marker
- 
+
  function deleteMarker(pinID){
         $.ajax({
             type: "post",
@@ -461,7 +460,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
             }
         });
     }
-    
+
+
 
     // Complete!
  function addFishingLocation(date, typeOfFish, amount, comments){
@@ -472,7 +472,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
      upload_data.append("longitude", longitude);
      upload_data.append("time", time.toLocaleTimeString().substring(0, time.toLocaleDateString().length - 1)); // time
      console.log(JSON.stringify(upload_data));
-     
+
      var xhr = new XMLHttpRequest;
         xhr.open('POST', 'http://gallery-armani.codio.io:3000/Instafish/endpoints/insertRecords.php', true);
         xhr.onload = function(oEvent){
@@ -483,15 +483,15 @@ google.maps.event.addDomListener(window, 'load', initialize);
             }
         }
         xhr.send(upload_data);
-  
+
     // Update Map.
-    // 
+    //
     div_hide();
     console.log("div should close");
     $('#datepicker').value = "";
     $('#name').value = "";
     $('#amount').value = "";
-     
+
     $('#comments').value = "";
     setTimeout(function(){getUserPins(); getAverage();},3000);
      console.log("Does it work now?");
@@ -504,7 +504,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
             e.preventDefault();
             if ($('#name').value == "" || $('#amount').value == "" || $('#comment').value == "") {
           alert("Fill All Fields !");
-            }
+        }
             else {
                 console.log("Form success");
                 var date = $('#datepicker').val();
@@ -518,15 +518,15 @@ google.maps.event.addDomListener(window, 'load', initialize);
                 console.log(comments)
                 console.log(weight);
                 addFishingLocation(date, typeOfFish, amount, comments);
-          
+
             // get all elements here to insert to form
                 alert("Form Submitted Successfully...");
-           
+
              }
-            
+
         });
 
-        
+
     //Function To Display Popup
     function div_show() {
     document.getElementById('abc').style.display = "block";
