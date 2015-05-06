@@ -343,15 +343,34 @@ google.maps.event.addDomListener(window, 'load', initialize);
 #popup{
  width:100%;
  color:#ffffff;
+ border-radius:15px;  
+ border: #ffffff;   
+} 
+#usernameDisplay{
+    float:right;
+    color: #ffffff;
+    font-size:25px;
+    padding-top: 10px;
 }
+    
+    
 </style>
   <body id="wrapper">
+      <div class="container" id="header">
+          <div class="row">
+              <div class="col-xs-6"></div>
+              <div class="col-xs-6">
+                <span id="usernameDisplay"> Welcome, <?=$_SESSION['username']?> </span> 
+              </div>
+          </div>
+      </div>
+          
   <div class="container" id="header">
     <div class="row">
         <div class="col-xs-6">
           <h1 id="title">InstaFish</h1>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-6" id="logoutButton">
           <form action="logout.php">
             <input type="submit" value="Logout" id="logout" />
           </form>

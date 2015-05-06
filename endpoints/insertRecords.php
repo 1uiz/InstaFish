@@ -70,7 +70,7 @@
 	
 	         //  update database with the name of the file for the profile picture
 		
-            $sql   = "INSERT INTO userData (userId, time, date, fishType, comments, amount, latitude, longitude, fishPicture) VALUES (:userID, :time, :date, :fishType, :comments, :amount, :latitude, :longitude, :fishPicture)";
+            $sql   = "INSERT INTO userData (userId, time, date, fishType, comments, amount, latitude, longitude, fishPicture, weight) VALUES (:userID, :time, :date, :fishType, :comments, :amount, :latitude, :longitude, :fishPicture, :weight)";
 	        $namedParameters = array();
 	        $namedParameters[":userID"] = $_POST['userID'];
             $namedParameters[":time"] = $_POST['time'];
@@ -81,7 +81,7 @@
             $namedParameters[":latitude"] = $_POST['latitude'];
             $namedParameters[":longitude"] = $_POST['longitude'];
             $namedParameters[":fishPicture"] = $fileName;
-            
+            $namedParameters[":weight"] = $_POST['weight'];
 	
 	        $stmt = $dbConn -> prepare($sql);
 	        $stmt -> execute($namedParameters);
