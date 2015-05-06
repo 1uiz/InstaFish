@@ -1,8 +1,8 @@
-<?php
+    <?php
     require "../functions/dbConnection.php";
     session_start();
     if(!isset($_POST['userID'])){
-        
+       
         echo "Error inserting to the database";
         
     }else if(isset($_POST['userID']) && isset($_POST['updatePin'])){
@@ -24,7 +24,7 @@
 	         //  update database with the name of the file for the profile picture
 		
              
-            $sql   = "UPDATE userData SET userID=" . $_POST['userID'] . ", time=" . $_POST['time'] . ", date='". $_POST['date'] . "', fishType='" . $_POST['fishType'] . "', amount=" . $_POST['amount'] . ", latitude=" . $_POST['userID'] . ", longitude=" . $_POST['userID'] .  ", comments='" . $_POST['comments'] . "', fishPicture='" . $fileName . "' WHERE pinID=" . $pinID;
+            $sql   = "UPDATE userData SET userID=" . $_POST['userID'] . ", time=" . $_POST['time'] . ", weight='" . $_POST['weight'] .  ", date='". $_POST['date'] . "', fishType='" . $_POST['fishType'] . "', amount=" . $_POST['amount'] . ", latitude=" . $_POST['userID'] . ", longitude=" . $_POST['userID'] .  ", comments='" . $_POST['comments'] . "', fishPicture='" . $fileName . "' WHERE pinID=" . $pinID;
 	
 	        $stmt = $dbConn -> prepare($sql);
 	        $stmt -> execute();
@@ -42,6 +42,8 @@
     else{
         $dbConn = getConnection();
         
+        // let's match up names from post to here.
+        var_dump($_POST);
         
         // TODO: Install exif module on production server
 	    $imageType = exif_imagetype($_FILES['fileName']['tmp_name']); // 1, 2, 3 for gif, jpg or png respectively.
@@ -54,7 +56,7 @@
 		    unlink($_FILES['fileName']['tmp_name']);
 	    } else{
             
-            $path = "img/" . $_SESSION['username'];
+            $path = "../img/" . $_SESSION['username'];
 	        if(!file_exists($path)){ // check whether the user's folder exists
 		        mkdir($path);
 	        }
@@ -70,7 +72,7 @@
 	
 	         //  update database with the name of the file for the profile picture
 		
-            $sql   = "INSERT INTO userData (userId, time, date, fishType, comments, amount, latitude, longitude, fishPicture) VALUES (:userID, :time, :date, :fishType, :comments, :amount, :latitude, :longitude, :fishPicture)";
+            $sql   = "INSERT INTO userData (userId, time, date, fishType, comments, amount, latitude, longitude, fishPicture, weight) VALUES (:userID, :time, :date, :fishType, :comments, :amount, :latitude, :longitude, :fishPicture, :catchWeight)";
 	        $namedParameters = array();
 	        $namedParameters[":userID"] = $_POST['userID'];
             $namedParameters[":time"] = $_POST['time'];
@@ -81,6 +83,7 @@
             $namedParameters[":latitude"] = $_POST['latitude'];
             $namedParameters[":longitude"] = $_POST['longitude'];
             $namedParameters[":fishPicture"] = $fileName;
+            $namedParameters[":catchWeight"] = $_POST['weight'];
             
 	
 	        $stmt = $dbConn -> prepare($sql);
