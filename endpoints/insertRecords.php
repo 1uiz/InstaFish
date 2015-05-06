@@ -23,7 +23,7 @@
 	
 	         //  update database with the name of the file for the profile picture
 		
-            var_dump($_POST);   
+             
             $sql   = "UPDATE userData SET userID=" . $_POST['userID'] . ", time=" . $_POST['time'] . ", date='". $_POST['date'] . "', fishType='" . $_POST['fishType'] . "', amount=" . $_POST['amount'] . ", latitude=" . $_POST['userID'] . ", longitude=" . $_POST['userID'] .  ", comments='" . $_POST['comments'] . "', fishPicture='" . $fileName . "' WHERE pinID=" . $pinID;
 	
 	        $stmt = $dbConn -> prepare($sql);
@@ -31,6 +31,12 @@
 	        echo json_encode(array("status" => "success!"));
             
         }
+    }else if(isset($_POST['userID']) && isset($_POST['deletePin'])){
+        $dbConn = getConnection();
+        $sql = "DELETE FROM userData WHERE userID='" . $_POST['userID'] . "' AND pinId='" . $_POST['pinID'] . "'";
+        $stmt = $dbConn -> prepare($sql);
+        $stmt -> execute();
+        echo json_encode(array("status" => "success!"));
     }
 
     else{

@@ -36,6 +36,8 @@ function geocodePosition(pos) {
 function updateMarkerStatus(str) {
   document.getElementById('markerStatus').innerHTML = str;
 }
+    
+
 
 function updateMarkerPosition(latLng) {
   document.getElementById('info').innerHTML = [
@@ -199,7 +201,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
         </div>
         <div class="col-xs-6">
           <form action="logout.php">
-            <input type="submit" value="Logout" id="logout"></input>
+            <input type="submit" value="Logout" id="logout" />
           </form>
         </div>
     </div>
@@ -272,9 +274,31 @@ google.maps.event.addDomListener(window, 'load', initialize);
         <button id="popup" onclick="div_show()" style="background-color:#377fa3;">Drop Pin!</button>
       </div>
     </div>
-  </div>
+  
     </body>
     </html>
+
+<script>
+    
+ // ajax method to delete marker
+ function deleteMarker(pinID){
+        $.ajax({
+            type: "post",
+            url: "http://gallery-armani.codio.io:3000/Instafish/endpoints/insertRecords.php",
+            dataType: "json",
+            data: {"userID": "1", "deletePin": "1", "pinID": pinID},
+            success: function(data, status){
+                alert(data['status']);
+           },
+            complete: function(data, status){
+                alert(data);
+            }
+        });
+    }
+    
+ function addMarker()
+    
+</script>
 
     <script>
     function check_empty() {
@@ -285,10 +309,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
         else {
           console.log("Form success");
           document.getElementById('form').submit();
-            alert("Form Submitted Successfully...");
-            initialize();
-          }
+            // get all elements here
+          alert("Form Submitted Successfully...");
+           
+       }
     }
+        
     //Function To Display Popup
     function div_show() {
     document.getElementById('abc').style.display = "block";
