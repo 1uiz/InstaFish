@@ -7,12 +7,10 @@
     }
 
 ?>
-
 <html>
 <head>
 <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 <link href="css/elements.css" rel="stylesheet">
-<script src="js/my_js.js"></script>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
@@ -107,14 +105,22 @@ function getUserPins(){
             	var fishType = data[x]['fishType'];
             	var amount = data[x]['amount'];
             	var picture = data[x]['fishPicture'];
+                var username = data[x]['username'];
              	var picturePath = "img/" + username + "/" + picture;
                 var weight = data[x]['weight'];
                  console.log("Here: " + picturePath);
              	var infoWindowContent = [
 		        ['<div class="info_content">' +
 		        '<h3>' + comment + '</h3>' + '<p hidden>' + pinID + "</p>" +
-		        '<p><strong>Date:</strong> '+ date + ' <br/><strong>Weight:</strong> ' + weight + ' <br/><strong>Type of fish:</strong> ' + fishType + ' <br/><strong>Amount caught:</strong> ' + amount + '</p>' +
-		        '<img src=' + picturePath + ' height=125px width=100px/>'+'</div>']
+		        '<p><strong>Date:</strong> '+ date + ' <br/><strong>Weight:</strong> ' + weight +
+		        ' <br/><strong>Type of fish:</strong> ' + fishType + ' <br/><strong>Amount caught:</strong> ' + amount + '</p>' +
+		        '<img src=' + picturePath + ' height=125px width=100px/>'+'</div>' +
+		        '<div style="display:inline">' +
+		        '<input type="button" onClick="deleteUserPin(' + userID +  ',' + pinID + ')" value="Delete"/>' +
+		        '<input type="button" onClick="" value="Update"/>' +
+
+		        '</div>' +
+		        '</div>']
 		    ];
              	addUserMarkers(map, infoWindowContent[0][0], location, pinID);
 			  	}
@@ -132,13 +138,17 @@ function getUserPins(){
 
 function deleteUserPin(userID, userPin){
     console.log("Delete user pins");
+    console.log("userid: " + userID);
+    console.log("userpin: " + userPin);
     $.ajax({
         type: "post",
         url: "http://gallery-armani.codio.io:3000/Instafish/endpoints/insertRecords.php",
         dataType: "json",
+
         data: {"userID": userID, "pinID" : userPin, "deletePin": 1},
         success: function(data, status){
             console.log("delete success");
+            console.log("length: " + userMarkers.length);
             for(var x = 0; x < userMarkers.length; x++){
                 if(userMarkers[x]['ID'] == userPin){
                     console.log("Found markers");
@@ -147,7 +157,8 @@ function deleteUserPin(userID, userPin){
             }
         },
         complete: function(data, status){
-            setTimeout(function(){getUserPins()},3000);
+        	console.log("delete complete");
+            setTimeout(function(){getUserPins(), getAverage()},3000);
         }
 
     });
@@ -208,6 +219,7 @@ function initialize() {
             	var amount = data[x]['amount'];
             	var picture = data[x]['fishPicture'];
              	console.log("Picture " + picture);
+                var username = data[x]['username'];
                 var picturePath = "img/" + username + "/" + picture;
                 console.log(picturePath);
                 var weight = data[x]['weight'];
@@ -236,10 +248,11 @@ function initialize() {
     // add markers that belong to signed in user
     function addUserMarkers(map, name, location, pinID){
         console.log("addUserMarker");
+        
         var icon = {
             url: "fishIcon.png", // url
             scaledSize: new google.maps.Size(50, 50), // scaled size
-
+            
         };
 
         var marker = new google.maps.Marker({
@@ -247,6 +260,7 @@ function initialize() {
             icon: icon,
             map: map,
             ID: pinID
+            
         });
 
         userMarkers.push(marker);
@@ -352,8 +366,18 @@ google.maps.event.addDomListener(window, 'load', initialize);
     font-size:25px;
     padding-top: 10px;
 }
-    
-    
+
+#delete{
+	width:50%;
+	margin-top:5px;
+}
+#update{
+	width:50%;
+}
+.info_content{
+	padding-bottom: 10px;
+	width:150px;
+}
 </style>
   <body id="wrapper">
       <div class="container" id="header">
