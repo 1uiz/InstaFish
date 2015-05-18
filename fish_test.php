@@ -11,7 +11,6 @@
 <head>
 <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 <link href="css/elements.css" rel="stylesheet">
-<script src="js/my_js.js"></script>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
@@ -65,7 +64,7 @@ function getAverage(){
     console.log("getAverage");
     $.ajax({
         type: "post",
-        url: "http://hosting.otterlabs.org/classes/garciarivkan/CST336/project/endpoints/retrieveRecords.php",
+        url: "http://gallery-armani.codio.io:3000/Instafish/endpoints/retrieveRecords.php",
         dataType: "json",
         data: {"userID": userID, "thisUserAverage": "1"},
         success: function(data, status){
@@ -91,9 +90,9 @@ function getUserPins(){
     console.log("getUserPins");
     $.ajax({
         type: "post",
-         url: "http://hosting.otterlabs.org/classes/garciarivkan/CST336/project/endpoints/retrieveRecords.php",
+         url: "http://gallery-armani.codio.io:3000/Instafish/endpoints/retrieveRecords.php",
          dataType: "json",
-         data: {"userID": 4, "thisUser": "1"},
+         data: {"userID": userID, "thisUser": "1"},
          success: function(data, status){
 		     console.log("get user pins success");
              console.log("Size: " + data.length);
@@ -106,6 +105,7 @@ function getUserPins(){
             	var fishType = data[x]['fishType'];
             	var amount = data[x]['amount'];
             	var picture = data[x]['fishPicture'];
+                var username = data[x]['username'];
              	var picturePath = "img/" + username + "/" + picture;
                 var weight = data[x]['weight'];
                  console.log("Here: " + picturePath);
@@ -117,7 +117,7 @@ function getUserPins(){
 		        '<img src=' + picturePath + ' height=125px width=100px/>'+'</div>' +
 		        '<div style="display:inline">' +
 		        '<input type="button" onClick="deleteUserPin(' + userID +  ',' + pinID + ')" value="Delete"/>' +
-		        '<button id="update" onclick="deleteUserPin("'+ username +',' + pinID+'")" >' + 'Update'+'</button>' +
+		        '<input type="button" onClick="" value="Update"/>' +
 
 		        '</div>' +
 		        '</div>']
@@ -142,7 +142,7 @@ function deleteUserPin(userID, userPin){
     console.log("userpin: " + userPin);
     $.ajax({
         type: "post",
-        url: "http://hosting.otterlabs.org/classes/garciarivkan/CST336/project/endpoints/insertRecords.php",
+        url: "http://gallery-armani.codio.io:3000/Instafish/endpoints/insertRecords.php",
         dataType: "json",
 
         data: {"userID": userID, "pinID" : userPin, "deletePin": 1},
@@ -158,7 +158,7 @@ function deleteUserPin(userID, userPin){
         },
         complete: function(data, status){
         	console.log("delete complete");
-            setTimeout(function(){getUserPins()},3000);
+            setTimeout(function(){getUserPins(), getAverage()},3000);
         }
 
     });
@@ -206,7 +206,7 @@ function initialize() {
 
      $.ajax({
          type: "post",
-         url: "http://hosting.otterlabs.org/classes/garciarivkan/CST336/project/endpoints/retrieveRecords.php",
+         url: "http://gallery-armani.codio.io:3000/Instafish/endpoints/retrieveRecords.php",
          dataType: "json",
          data: {"userID": userID},
          success: function(data, status){
@@ -219,6 +219,7 @@ function initialize() {
             	var amount = data[x]['amount'];
             	var picture = data[x]['fishPicture'];
              	console.log("Picture " + picture);
+                var username = data[x]['username'];
                 var picturePath = "img/" + username + "/" + picture;
                 console.log(picturePath);
                 var weight = data[x]['weight'];
@@ -247,11 +248,19 @@ function initialize() {
     // add markers that belong to signed in user
     function addUserMarkers(map, name, location, pinID){
         console.log("addUserMarker");
+        
+        var icon = {
+            url: "fishIcon.png", // url
+            scaledSize: new google.maps.Size(50, 50), // scaled size
+            
+        };
 
         var marker = new google.maps.Marker({
             position: location,
+            icon: icon,
             map: map,
             ID: pinID
+            
         });
 
         userMarkers.push(marker);
@@ -348,7 +357,16 @@ google.maps.event.addDomListener(window, 'load', initialize);
 #popup{
  width:100%;
  color:#ffffff;
+ border-radius:15px;  
+ border: #ffffff;   
+} 
+#usernameDisplay{
+    float:right;
+    color: #ffffff;
+    font-size:25px;
+    padding-top: 10px;
 }
+
 #delete{
 	width:50%;
 	margin-top:5px;
@@ -357,17 +375,26 @@ google.maps.event.addDomListener(window, 'load', initialize);
 	width:50%;
 }
 .info_content{
-	padding-bottom: 5px;
+	padding-bottom: 10px;
 	width:150px;
 }
 </style>
   <body id="wrapper">
+      <div class="container" id="header">
+          <div class="row">
+              <div class="col-xs-6"></div>
+              <div class="col-xs-6">
+                <span id="usernameDisplay"> Welcome, <?=$_SESSION['username']?> </span> 
+              </div>
+          </div>
+      </div>
+          
   <div class="container" id="header">
     <div class="row">
         <div class="col-xs-6">
           <h1 id="title">InstaFish</h1>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-6" id="logoutButton">
           <form action="logout.php">
             <input type="submit" value="Logout" id="logout" />
           </form>
@@ -463,7 +490,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
  function deleteMarker(pinID){
         $.ajax({
             type: "post",
-            url: "http://hosting.otterlabs.org/classes/garciarivkan/CST336/project/endpoints/insertRecords.php",
+            url: "http://gallery-armani.codio.io:3000/Instafish/endpoints/insertRecords.php",
             dataType: "json",
             data: {"userID": "1", "deletePin": "1", "pinID": pinID},
             success: function(data, status){
@@ -490,7 +517,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
      console.log(JSON.stringify(upload_data));
 
      var xhr = new XMLHttpRequest;
-        xhr.open('POST', 'http://hosting.otterlabs.org/classes/garciarivkan/CST336/project/endpoints/insertRecords.php', true);
+        xhr.open('POST', 'http://gallery-armani.codio.io:3000/Instafish/endpoints/insertRecords.php', true);
         xhr.onload = function(oEvent){
             if(xhr.status == 200){
                 alert("Uploaded!");
